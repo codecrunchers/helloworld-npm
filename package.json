@@ -1,0 +1,27 @@
+{
+  "name": "npmtest",
+  "version": "3.0.0",
+  "description": "Test",
+  "main": "index.js",
+  "scripts": {
+    "test:acceptance": "cross-env LOG_LEVEL=emerg jest --verbose acceptance/feature/**/*.spec.js --runInBand --forceExit --no-cache",
+    "test:integration": "echo \"INTEGRATION\"",
+    "test:lint":"eslint src/",
+    "test:unit": "cross-env LOG_LEVEL=emerg jest __tests__/unit/* --verbose --forceExit --coverage --no-cache",
+    "test:smoke":"echo \"SMOKE\"",
+    "test:performance":"echo \"PERFROMANCE\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Plnt9/helloworld-npm.git"
+  },
+  "keywords": [
+    "Testy"
+  ],
+  "author": "Me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Plnt9/helloworld-npm/issues"
+  },
+  "homepage": "https://github.com/Plnt9/helloworld-npm#readme"
+}
