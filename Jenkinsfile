@@ -20,6 +20,7 @@ node('nodejs_slave'){
 	    	dir('tf'){
 				sh 'terraform validate';
 				sh 'terraform plan';
+                sh 'terraform apply'; //if plan e.g. has "0 to Destroy"
 			}
 	}
 
