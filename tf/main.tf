@@ -10,7 +10,8 @@ resource "aws_instance" "node_box" {
   user_data                   = "${data.template_file.user_data.rendered}"
 
   tags = {
-    Name = "AppBoxNode1"
+    Name       = "AppBoxNode1"
+    ServerRole = "WebServer"
   }
 
   iam_instance_profile = "${aws_iam_instance_profile.app.name}"
