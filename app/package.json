@@ -8,8 +8,6 @@
         "test:unit": "jest --verbose --coverage",
         "test:acceptance": "cross-env LOG_LEVEL=emerg jest --verbose acceptance/feature/**/*.spec.js --runInBand --forceExit --no-cache",
         "test:integration": "echo \"INTEGRATION\"",
-        "test:lint":"eslint src/",
-        "test:unit": "cross-env LOG_LEVEL=emerg jest __tests__/unit/* --verbose --forceExit --coverage --no-cache",
         "test:smoke":"echo \"SMOKE\"",
         "test:performance":"echo \"PERFROMANCE\""
     },
@@ -18,6 +16,7 @@
         "url": "git+ssh://git@github.com/Plnt9/helloworld-npm.git"
     },
     "devDependencies": {
+        "cross-env":"^5.0.5",
         "jest": "^21.2.1",
         "jest-junit": "^3.0.0"
     },
@@ -29,5 +28,11 @@
     "bugs": {
         "url": "https://github.com/Plnt9/helloworld-npm/issues"
     },
-    "homepage": "https://github.com/Plnt9/helloworld-npm#readme"
+    "homepage": "https://github.com/Plnt9/helloworld-npm#readme",
+    "jest": {
+        "testResultsProcessor": "jest-junit",
+        "collectCoverageFrom": [
+            "src/*.js"
+        ]
+    }
 }

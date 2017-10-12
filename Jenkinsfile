@@ -12,19 +12,13 @@ node('nodejs_slave'){
     stage("Unit Test"){
 	    	dir('app'){
 				sh 'npm run test:unit';
+				sh 'npm run test:lint';
 			}
 	}
-
-    stage("Sonar"){
-	    	dir('app'){
-				sh 'echo \"Do Sonar!\"';
-			}
-	}
-
 
     stage("Deploy"){
 	    	dir('tf'){
-				sh 'terraforfm validate';
+				sh 'terraform validate';
 				sh 'terraform plan';
 			}
 	}
