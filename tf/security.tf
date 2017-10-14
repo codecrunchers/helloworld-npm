@@ -1,6 +1,6 @@
 resource "aws_security_group" "web_server" {
   name   = "web_server"
-  vpc_id = "${data.terraform_remote_state.infrastructure.vpc_id}"
+  vpc_id = "${data.terraform_remote_state.infrastructure.pipeline_vpc_id}"
 
   ingress {
     from_port   = 80

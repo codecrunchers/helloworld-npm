@@ -3,7 +3,7 @@ data "terraform_remote_state" "infrastructure" {
 
   config = {
     region = "eu-west-1"
-    bucket = "alan.planet9.statefiles-pipeline-v2"
+    bucket = "my.bucket.unique.id"
     key    = "tf_statefiles/dev.tfstate"
     acl    = "private"
   }
