@@ -48,8 +48,8 @@ node('nodejs_slave'){
                 REPLACE_TOKEN_VERSION_VAL=sh(returnStdout: true,
                         script: "cat package.json | grep 'version.*' | cut -d':' -f2  | sed s'/\"//g' | sed s'/,//'").trim()
                 sh "sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js"
-                sh "git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate" && git push --tags"
-                sh "node scripts/deploy.js"
+                sh 'git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate" && git push --tags
+                sh 'node scripts/deploy.js'
 }
         }
 
