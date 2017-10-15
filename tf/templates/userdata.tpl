@@ -10,4 +10,5 @@ sudo ln -s /opt/node/node-v6.11.4-linux-x64/bin/node /usr/bin/node
 sudo ln -s /opt/node/node-v6.11.4-linux-x64/lib /usr/lib/node
 sudo ln -s /opt/node/node-v6.11.4-linux-x64/bin/npm /usr/bin/npm
 sudo npm install -g pac
+sudo 
 

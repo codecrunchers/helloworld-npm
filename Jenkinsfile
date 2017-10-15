@@ -6,6 +6,7 @@ node('nodejs_slave'){
     stage("Install"){
         dir('app'){
             sh 'npm install';
+            
         }
     }
 
@@ -16,59 +17,29 @@ node('nodejs_slave'){
         }
     }
 
-/*    stage("Sonar Analysis"){
-        dir('app'){
-            withSonarQubeEnv {
-                sh "./${sonar_runner} clean sonarqube"
-            }
-        }
-    }
-
-
-    stage("Analysis") {
-        parallel "performance": {
-            node('nodejs_slave') {
-                checkout scm
-                    sh 'npm run test:integration'
-            },
-            "security": node('nodejs_slave') {
-              checkout scm
-                  sh 'npm run test:performance'
-          }
-        }
-    }
-*/
-
     stage("Package"){
         dir('app'){
             sh 'npm version'
                 sh 'pac'
                 REPLACE_TOKEN_FILE_VAL=sh(returnStdout: true, script: 'npm pack').trim()
-                sh "sed -i 's/REPLACE_TOKEN_FILE/REPLACE_TOKEN_FILE_VAL/g' scripts/deploy.js"
+                
                 REPLACE_TOKEN_VERSION_VAL=sh(returnStdout: true,
                         script: "cat package.json | grep 'version.*' | cut -d':' -f2  | sed s'/\"//g' | sed s'/,//'").trim()
-                sh "sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js"
-                sh 'git config  user.email "pipeline@p9e.io" && git config user.name "Build Pipeline"' //need to use withEnv
-                sh 'git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate"'
-                sh 'git push --tags'
-                sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
-                sh 'node scripts/deploy.js'
-}
-        }
+                
+                sshagent(['git']) {
+                    sh 'git config  user.email "pipeline@p9e.io" && git config user.name "Build Pipeline"' //need to use withEnv
+                    sh 'git tag -a "v' +REPLACE_TOKEN_VERSION_VAL +'" -m "Release Candidate ' + REPLACE_TOKEN_FILE_VAL + '"'
+                    sh 'git push --tags'
+                }
 
-        stage("Deploy"){
-            dir('tf'){
-                sh 'terraform validate';
-                sh 'terraform plan';
-                sh 'terraform apply'; //if plan e.g. has "0 to Destroy"
-            }
+                //sh 'git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate"'
+                //sh 'git push --tags'
+                //sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
+                //sh 'node scripts/deploy.js'
         }
     }
 
-    def get_git_sha(git_dir='') {
-        dir('app') {
-            return sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-        }
     }
+
 
 

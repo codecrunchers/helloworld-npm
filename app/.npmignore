@@ -1,6 +1,11 @@
 .npmignore
+node_modules/
 .eslintrc.js
 junit.xml
 coverage/
-*tgz
+*.tgz
+*.tgz.*
+*xml*
+scripts/
+*zip*
 

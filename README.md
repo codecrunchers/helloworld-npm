@@ -6,7 +6,7 @@ We deploy a Hello World App, which decrypts and prints the value of a key stored
 ## Arch
 We deploy a node configured EC2 instance in two AZ's accessed vi an ELB.  This could be extended easily to a auto-scaled ec2 launch configuration for reliability engineering.
 
-## Packaing
+## Packaging
 Quick and dirty, using npm pack and checking .modules into repo.  Will push to nexus and is pulled and rebuilt on the target machine via user data.
 
 ## Env Vars
