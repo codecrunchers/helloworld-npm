@@ -29,15 +29,17 @@ node('nodejs_slave'){
                 
                 sshagent(['git']) {
                     sh 'git config  user.email "pipeline@p9e.io" && git config user.name "Build Pipeline"' //need to use withEnv
-                    sh 'git tag -a "v' +REPLACE_TOKEN_VERSION_VAL +'" -m "Release Candidate ' + REPLACE_TOKEN_FILE_VAL + '"'
                     sh 'git push --tags'
+                    sh 'git checkout -b releases/' + REPLACE_TOKEN_VERSION_VAL
+                    sh 'git add package.json && git commit -am "Release"'
+                    sh 'git push'
                 }
                 sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
                 sh 'node scripts/deploy.js'
         }
     }
 
-}
+}//eo pl
 
 
 
