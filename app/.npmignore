@@ -1,4 +1,6 @@
-src/.eslintrc.js
-src/junit.xml
+.npmignore
+.eslintrc.js
+junit.xml
 coverage/
+*tgz
 
