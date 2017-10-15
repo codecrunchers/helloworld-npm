@@ -1,5 +1,3 @@
-RELEASE_CANDIDATE_VERSION="0.0.0"
-
 node('nodejs_slave'){
     stage("Checkout"){
         checkout scm;
@@ -52,6 +50,7 @@ node('nodejs_slave'){
                 sh "sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js"
                 sh "git -a tag ${REPLACE_TOKEN_VERSION_VAL} && git push --tags"
                 sh "node scripts/deploy.js"
+}
         }
 
         stage("Deploy"){
