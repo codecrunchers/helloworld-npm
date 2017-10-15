@@ -18,7 +18,7 @@ node('nodejs_slave'){
         }
     }
 
-    stage("Sonar Analysis"){
+/*    stage("Sonar Analysis"){
         dir('app'){
             withSonarQubeEnv {
                 sh "./${sonar_runner} clean sonarqube"
@@ -39,6 +39,7 @@ node('nodejs_slave'){
           }
         }
     }
+*/
 
     stage("Package"){
         dir('app'){
