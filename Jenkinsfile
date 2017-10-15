@@ -1,3 +1,5 @@
+RELEASE_CANDIDATE_VERSION="0.0.0"
+
 node('nodejs_slave'){
     stage("Checkout"){
         checkout scm;
@@ -18,7 +20,9 @@ node('nodejs_slave'){
 
     stage("Sonar Analysis"){
         dir('app'){
-            sh 'echo "do sonar runner"';
+            withSonarQubeEnv {
+                sh "./${sonar_runner} clean sonarqube"
+            }
         }
     }
 
@@ -31,34 +35,34 @@ node('nodejs_slave'){
             },
             security: node('nodejs_slave') {
               checkout scm
-             sh 'npm run test:performance'
+                  sh 'npm run test:performance'
           }
         }
     }
 
     stage("Package"){
         dir('app'){
-            sh 'npm pac'
             sh 'npm version'
-            X = sh 'npm pack'
+                sh 'npm pac'
+                sh 'cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag $PACKAGE_VERSION && git push --tags'
+                RELEASE_CANDIDATE_VERSION = sh(returnStdout: true, script: 'npm pack').trim()
+        }
+
+        stage("Deploy"){
+            dir('tf'){
+                sh 'terraform validate';
+                sh 'terraform plan';
+                sh 'terraform apply'; //if plan e.g. has "0 to Destroy"
+            }
+        }
 
 
-}        
     }
 
-
-
-    stage("Deploy"){
-        dir('tf'){
-            sh 'terraform validate';
-            sh 'terraform plan';
-            sh 'terraform apply'; //if plan e.g. has "0 to Destroy"
+    def get_git_sha(git_dir='') {
+        dir('app') {
+            return sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
         }
     }
-
-
-                                                        }
-
-
 
 
