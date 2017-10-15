@@ -43,15 +43,15 @@ node('nodejs_slave'){
 
     stage("Package"){
         dir('app'){
-                sh 'npm version'
+            sh 'npm version'
                 sh 'npm pac'
                 REPLACE_TOKEN_FILE_VAL=sh(returnStdout: true, script: 'npm pack').trim()
                 sh "sed -i 's/REPLACE_TOKEN_FILE/REPLACE_TOKEN_FILE_VAL/g' scripts/deploy.js"
-                REPLACE_TOKEN_VERSION_VAL = sh(returnStdout: true,
-                    script: "cat package.json | grep 'version.*' | cut -d':' -f2  | sed s'/\"//g' | sed s'/,//'").trim()
-                sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js
+                REPLACE_TOKEN_VERSION_VAL=sh(returnStdout: true,
+                        script: "cat package.json | grep 'version.*' | cut -d':' -f2  | sed s'/\"//g' | sed s'/,//'").trim()
+                sh "sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js"
                 sh "git -a tag ${REPLACE_TOKEN_VERSION_VAL} && git push --tags"
-                sh 'node scripts/deploy.js
+                sh "node scripts/deploy.js"
         }
 
         stage("Deploy"){
