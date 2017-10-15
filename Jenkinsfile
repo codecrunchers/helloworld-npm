@@ -19,7 +19,8 @@ node('nodejs_slave'){
 
     stage("Package"){
         dir('app'){
-            sh 'npm version'
+                sh 'npm prune'
+                sh 'npm version'
                 sh 'pac'
                 REPLACE_TOKEN_FILE_VAL=sh(returnStdout: true, script: 'npm pack').trim()
                 
@@ -31,15 +32,12 @@ node('nodejs_slave'){
                     sh 'git tag -a "v' +REPLACE_TOKEN_VERSION_VAL +'" -m "Release Candidate ' + REPLACE_TOKEN_FILE_VAL + '"'
                     sh 'git push --tags'
                 }
-
-                //sh 'git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate"'
-                //sh 'git push --tags'
-                //sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
-                //sh 'node scripts/deploy.js'
+                sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
+                sh 'node scripts/deploy.js'
         }
     }
 
-    }
+}
 
 
 
