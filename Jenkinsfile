@@ -48,9 +48,10 @@ node('nodejs_slave'){
                 REPLACE_TOKEN_VERSION_VAL=sh(returnStdout: true,
                         script: "cat package.json | grep 'version.*' | cut -d':' -f2  | sed s'/\"//g' | sed s'/,//'").trim()
                 sh "sed -i 's/REPLACE_TOKEN_VERSION/REPLACE_TOKEN_VERSION_VAL/g' scripts/deploy.js"
-                sh 'git config  user.email "pipeline@p9e.io" && git config user.name "Build Pipeline"'
+                sh 'git config  user.email "pipeline@p9e.io" && git config user.name "Build Pipeline"' //need to use withEnv
                 sh 'git tag -a "v${REPLACE_TOKEN_VERSION_VAL}" -m "Release Candidate"'
                 sh 'git push --tags'
+                sh 'cp "${REPLACE_TOKEN_FILE_VAL}" "latest.tgz"'
                 sh 'node scripts/deploy.js'
 }
         }
