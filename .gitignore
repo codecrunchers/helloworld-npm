@@ -1,2 +1,7 @@
 node_modules
 app/coverage
+app/*.xml*
+app/*.xml
+app/*.tgz
+app/*zip*
+
